@@ -36,7 +36,8 @@ const settings = {
   Subscription_Page: {
     Videos_Per_Row: 6,
     Hide_Shorts: true,
-    Hide_Channel_Profile: true,
+    layoutFix: false,
+    Hide_Channel_Profile: false,
   },
 };
 
@@ -285,7 +286,9 @@ function run() {
 }
 
 settings.Subscription_Page.Hide_Shorts &&
+settings.Subscription_Page.layoutFix &&
   injectStyle("Stolen-from-AdashimaaTube", styles.subscriptionPage.layoutFix);
+
 settings.Subscription_Page.Hide_Channel_Profile &&
   injectStyle(
     "hide-channel-profile",
