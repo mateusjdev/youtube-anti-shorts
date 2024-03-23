@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        YouTube Anti-Shorts
-// @version     1.0.5
+// @version     1.0.6
 // @author      sapondanaisriwan
 // @namespace   https://github.com/sapondanaisriwan/youtube-anti-shorts
 // @description Remove all shorts
@@ -8,18 +8,14 @@
 // @grant       none
 // @license      MIT
 // @homepageURL https://github.com/sapondanaisriwan/youtube-anti-shorts
-// @updateURL   https://github.com/sapondanaisriwan/youtube-anti-shorts/raw/main/anti-shorts.user.js
-// @supportURL  https://github.com/sapondanaisriwan/youtube-anti-shorts/issues
+// @updateURL   https://github.com/mateusjdev/youtube-anti-shorts/raw/personal-use/userscript/yt-anti-shorts.user.js
+// @supportURL  https://github.com/mateusjdev/youtube-anti-shorts/issues
 // @icon        https://i.imgur.com/I9uDrsq.png
 // ==/UserScript==
 
 /*
 If you want to submit a bug or request a feature please report via github issue. Since I receive so many emails, I can't reply to them all.
 Contact: sapondanaisriwan@gmail.com
-Support me: https://ko-fi.com/sapondanaisriwan
-Support me: https://ko-fi.com/sapondanaisriwan
-Support me: https://ko-fi.com/sapondanaisriwan
-Support me: https://ko-fi.com/sapondanaisriwan
 Support me: https://ko-fi.com/sapondanaisriwan
 */
 
@@ -36,7 +32,7 @@ const settings = {
   Subscription_Page: {
     Videos_Per_Row: 6,
     Hide_Shorts: true,
-    layoutFix: false,
+    LayoutFix: false,
     Hide_Channel_Profile: false,
   },
 };
@@ -215,7 +211,6 @@ const injectStyle = (id, css) => {
   removeEle(id);
 
   const style = document.createElement("style");
-  style.type = "text/css";
   style.id = id;
   style.textContent = css;
   document.documentElement.appendChild(style);
@@ -286,9 +281,8 @@ function run() {
 }
 
 settings.Subscription_Page.Hide_Shorts &&
-settings.Subscription_Page.layoutFix &&
+settings.Subscription_Page.LayoutFix &&
   injectStyle("Stolen-from-AdashimaaTube", styles.subscriptionPage.layoutFix);
-
 settings.Subscription_Page.Hide_Channel_Profile &&
   injectStyle(
     "hide-channel-profile",
