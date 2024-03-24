@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        YouTube Anti-Shorts
-// @version     1.0.6
+// @version     1.0.6a
 // @author      sapondanaisriwan
 // @namespace   https://github.com/sapondanaisriwan/youtube-anti-shorts
 // @description Remove all shorts
@@ -23,92 +23,92 @@ Support me: https://ko-fi.com/sapondanaisriwan
 
 // Customize the way you like :)
 const settings = {
-  Hide_Tab: true, // Hide Tabs that named "SHORT"
-  Home_Page: true,
-  Channel_Page: true,
-  Watch_Page: true,
-  Search_Page: true,
-  Hashtag_Page: true,
-  Subscription_Page: {
-    Videos_Per_Row: 6,
-    Hide_Shorts: true,
-    LayoutFix: false,
-    Hide_Channel_Profile: false,
-  },
+    Hide_Tab: true, // Hide Tabs that named "SHORT"
+    Home_Page: true,
+    Channel_Page: true,
+    Watch_Page: true,
+    Search_Page: true,
+    Hashtag_Page: true,
+    Subscription_Page: {
+        Videos_Per_Row: 6,
+        Hide_Shorts: true,
+        LayoutFix: false,
+        Hide_Channel_Profile: false,
+    },
 };
 
 const config = { childList: true, subtree: true, attributes: true };
 const selectors = {
-  tabs: {
-    parent: "tp-yt-paper-tab",
-    element: "tp-yt-paper-tab .tab-title",
-  },
-  navbar: {
-    collapse: 'a.ytd-mini-guide-entry-renderer[title="Shorts"]',
-    expanded: `
+    tabs: {
+        parent: "tp-yt-paper-tab",
+        element: "tp-yt-paper-tab .tab-title",
+    },
+    navbar: {
+        collapse: 'a.ytd-mini-guide-entry-renderer[title="Shorts"]',
+        expanded: `
       #endpoint.yt-simple-endpoint.ytd-guide-entry-renderer[title="Shorts"],
       a.ytd-mini-guide-entry-renderer[title="Shorts"]
     `,
-  },
-  filterBar: {
-    parent: "yt-chip-cloud-chip-renderer",
-    element: "yt-chip-cloud-chip-renderer #text[title='Shorts']",
-  },
-  searchPage: {
-    reel: "ytd-search ytd-reel-shelf-renderer",
-    videos: {
-      parent: "ytd-video-renderer[is-search]",
-      element: "ytd-search #thumbnail[href^='/shorts/']",
     },
-  },
-  homePage: {
-    reel: {
-      parent: "ytd-rich-section-renderer",
-      element: "[page-subtype='home'] ytd-rich-shelf-renderer[is-shorts]",
+    filterBar: {
+        parent: "yt-chip-cloud-chip-renderer",
+        element: "yt-chip-cloud-chip-renderer #text[title='Shorts']",
     },
-  },
-  subscriptionPage: {
-    reel: {
-      parent: "ytd-rich-section-renderer",
-      element:
-        "[page-subtype='subscriptions'] ytd-rich-shelf-renderer[is-shorts]",
+    searchPage: {
+        reel: "ytd-search ytd-reel-shelf-renderer",
+        videos: {
+            parent: "ytd-video-renderer[is-search]",
+            element: "ytd-search #thumbnail[href^='/shorts/']",
+        },
     },
-    reelList: {
-      parent: "ytd-item-section-renderer[page-subtype='subscriptions']",
-      element: "ytd-reel-shelf-renderer",
+    homePage: {
+        reel: {
+            parent: "ytd-rich-section-renderer",
+            element: "[page-subtype='home'] ytd-rich-shelf-renderer[is-shorts]",
+        },
     },
-    videos: {
-      parent:
-        "ytd-grid-video-renderer, ytd-rich-item-renderer, ytd-item-section-renderer",
-      element: "[page-subtype='subscriptions'] #thumbnail[href^='/shorts/']",
+    subscriptionPage: {
+        reel: {
+            parent: "ytd-rich-section-renderer",
+            element:
+                "[page-subtype='subscriptions'] ytd-rich-shelf-renderer[is-shorts]",
+        },
+        reelList: {
+            parent: "ytd-item-section-renderer[page-subtype='subscriptions']",
+            element: "ytd-reel-shelf-renderer",
+        },
+        videos: {
+            parent:
+                "ytd-grid-video-renderer, ytd-rich-item-renderer, ytd-item-section-renderer",
+            element: "[page-subtype='subscriptions'] #thumbnail[href^='/shorts/']",
+        },
     },
-  },
-  channelPage: {
-    reel: {
-      parent: "ytd-item-section-renderer",
-      element: '[page-subtype="channels"] ytd-reel-shelf-renderer',
+    channelPage: {
+        reel: {
+            parent: "ytd-item-section-renderer",
+            element: '[page-subtype="channels"] ytd-reel-shelf-renderer',
+        },
+        feed: {
+            element:
+                "[page-subtype='channels'] ytd-rich-grid-renderer[is-shorts-grid]",
+        },
     },
-    feed: {
-      element:
-        "[page-subtype='channels'] ytd-rich-grid-renderer[is-shorts-grid]",
+    watchPage: {
+        reel: "ytd-watch-flexy ytd-reel-shelf-renderer",
     },
-  },
-  watchPage: {
-    reel: "ytd-watch-flexy ytd-reel-shelf-renderer",
-  },
-  hashtagPage: {
-    video: {
-      parent: "ytd-rich-item-renderer",
-      element:
-        "[page-subtype='hashtag-landing-page'] #thumbnail[href^='/shorts/']",
+    hashtagPage: {
+        video: {
+            parent: "ytd-rich-item-renderer",
+            element:
+                "[page-subtype='hashtag-landing-page'] #thumbnail[href^='/shorts/']",
+        },
     },
-  },
 };
 
 // Stolen from AdashimaaTube
 const styles = {
-  subscriptionPage: {
-    layoutFix: `
+    subscriptionPage: {
+        layoutFix: `
     [page-subtype="subscriptions"] ytd-rich-grid-renderer #contents ytd-rich-grid-row,
     [page-subtype="subscriptions"] ytd-rich-grid-renderer #contents ytd-rich-grid-row #contents {
       display: contents;
@@ -157,136 +157,136 @@ const styles = {
       }
     }
     `,
-    hideChannelProfile: `
+        hideChannelProfile: `
     [page-subtype="subscriptions"] #avatar-link.ytd-rich-grid-media {
       display: none;
     }
     `,
-  },
+    },
 };
 
 function checkDisplay(ele) {
-  return ele.style.display === "none";
+    return ele.style.display === "none";
 }
 
 function setHide(ele) {
-  ele.style.display = "none";
+    ele.style.display = "none";
 }
 
 function hideEle(ele) {
-  const isEleHide = checkDisplay(ele);
-  !isEleHide && setHide(ele);
+    const isEleHide = checkDisplay(ele);
+    !isEleHide && setHide(ele);
 }
 
 function hideParentEle(ele, parent) {
-  const parentEle = ele.closest(parent);
-  if (parentEle) {
-    const isParentHide = checkDisplay(parentEle);
-    !isParentHide && setHide(parentEle);
-  }
+    const parentEle = ele.closest(parent);
+    if (parentEle) {
+        const isParentHide = checkDisplay(parentEle);
+        !isParentHide && setHide(parentEle);
+    }
 }
 
 function hideShorts(selector, parent = "") {
-  [...document.querySelectorAll(selector)].forEach((ele) =>
-    parent ? hideParentEle(ele, parent) : hideEle(ele)
-  );
+    [...document.querySelectorAll(selector)].forEach((ele) =>
+        parent ? hideParentEle(ele, parent) : hideEle(ele)
+    );
 }
 
 function hideShortsText(selector, parent = "") {
-  [...document.querySelectorAll(selector)].forEach(
-    (ele) =>
-      ele.textContent.toLowerCase() === "shorts" && hideParentEle(ele, parent)
-  );
+    [...document.querySelectorAll(selector)].forEach(
+        (ele) =>
+            ele.textContent.toLowerCase() === "shorts" && hideParentEle(ele, parent)
+    );
 }
 
 // Function to remove DOM element
 const removeEle = (id) => {
-  const ele = document.getElementById(id);
-  ele && ele.remove();
+    const ele = document.getElementById(id);
+    ele && ele.remove();
 };
 
 // Function to inject a style into the webpage
 const injectStyle = (id, css) => {
-  // Remove before adding
-  removeEle(id);
+    // Remove before adding
+    removeEle(id);
 
-  const style = document.createElement("style");
-  style.id = id;
-  style.textContent = css;
-  document.documentElement.appendChild(style);
+    const style = document.createElement("style");
+    style.id = id;
+    style.textContent = css;
+    document.documentElement.appendChild(style);
 };
 
 function run() {
-  // Home Page
-  if (settings.Home_Page) {
-    hideShorts(selectors.homePage.reel.element, selectors.homePage.reel.parent);
-  }
+    // Home Page
+    if (settings.Home_Page) {
+        hideShorts(selectors.homePage.reel.element, selectors.homePage.reel.parent);
+    }
 
-  // Channel Page
-  if (settings.Channel_Page) {
-    hideShorts(selectors.channelPage.feed.element);
-    hideShorts(
-      selectors.channelPage.reel.element,
-      selectors.channelPage.reel.parent
-    );
-  }
+    // Channel Page
+    if (settings.Channel_Page) {
+        hideShorts(selectors.channelPage.feed.element);
+        hideShorts(
+            selectors.channelPage.reel.element,
+            selectors.channelPage.reel.parent
+        );
+    }
 
-  // Watch Page
-  if (settings.Watch_Page) {
-    hideShorts(selectors.watchPage.reel);
-  }
+    // Watch Page
+    if (settings.Watch_Page) {
+        hideShorts(selectors.watchPage.reel);
+    }
 
-  // Search Page
-  if (settings.Search_Page) {
-    hideShorts(selectors.searchPage.reel);
-    hideShorts(
-      selectors.searchPage.videos.element,
-      selectors.searchPage.videos.parent
-    );
-  }
+    // Search Page
+    if (settings.Search_Page) {
+        hideShorts(selectors.searchPage.reel);
+        hideShorts(
+            selectors.searchPage.videos.element,
+            selectors.searchPage.videos.parent
+        );
+    }
 
-  // Subscription Page
-  if (settings.Subscription_Page.Hide_Shorts) {
-    hideShorts(
-      selectors.subscriptionPage.videos.element,
-      selectors.subscriptionPage.videos.parent
-    );
-    hideShorts(
-      selectors.subscriptionPage.reel.element,
-      selectors.subscriptionPage.reel.parent
-    );
-    hideShorts(
-      selectors.subscriptionPage.reelList.element,
-      selectors.subscriptionPage.reelList.parent
-    );
-  }
-
-  // Hashtag Page
-  if (settings.Hashtag_Page) {
-    hideShorts(
-      selectors.hashtagPage.video.element,
-      selectors.hashtagPage.video.parent
-    );
-  }
-
-  if (settings.Hide_Tab) {
-    // Tabs
-    hideShortsText(selectors.tabs.element, selectors.tabs.parent);
-    hideShorts(selectors.navbar.expanded);
-    hideShorts(selectors.navbar.collapse);
+    // Subscription Page
+    if (settings.Subscription_Page.Hide_Shorts) {
+        hideShorts(
+            selectors.subscriptionPage.videos.element,
+            selectors.subscriptionPage.videos.parent
+        );
+        hideShorts(
+            selectors.subscriptionPage.reel.element,
+            selectors.subscriptionPage.reel.parent
+        );
+        hideShorts(
+            selectors.subscriptionPage.reelList.element,
+            selectors.subscriptionPage.reelList.parent
+        );
+    }
 
     // Hashtag Page
-    hideShorts(selectors.filterBar.element, selectors.filterBar.parent);
-  }
+    if (settings.Hashtag_Page) {
+        hideShorts(
+            selectors.hashtagPage.video.element,
+            selectors.hashtagPage.video.parent
+        );
+    }
+
+    if (settings.Hide_Tab) {
+        // Tabs
+        hideShortsText(selectors.tabs.element, selectors.tabs.parent);
+        hideShorts(selectors.navbar.expanded);
+        hideShorts(selectors.navbar.collapse);
+
+        // Hashtag Page
+        hideShorts(selectors.filterBar.element, selectors.filterBar.parent);
+    }
 }
 
 settings.Subscription_Page.Hide_Shorts &&
-settings.Subscription_Page.LayoutFix &&
-  injectStyle("Stolen-from-AdashimaaTube", styles.subscriptionPage.layoutFix);
+    settings.Subscription_Page.LayoutFix &&
+    injectStyle("Stolen-from-AdashimaaTube", styles.subscriptionPage.layoutFix);
 settings.Subscription_Page.Hide_Channel_Profile &&
-  injectStyle(
-    "hide-channel-profile",
-    styles.subscriptionPage.hideChannelProfile
-  );
+    injectStyle(
+        "hide-channel-profile",
+        styles.subscriptionPage.hideChannelProfile
+    );
 const observer = new MutationObserver(run);
 observer.observe(document.documentElement, config);
